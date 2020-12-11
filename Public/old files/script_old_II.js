@@ -169,20 +169,17 @@ function draw() {
 }
 var interval = setInterval(draw, 9);
 
-var checkbox = document.getElementById('darkmode');
-
-function darkmode() {
-    if (checkbox.checked == true){
-        document.documentElement.style.setProperty('--primary-background', 'black');
-        document.documentElement.style.setProperty('--primary-color', 'white');
+function myFunction() {
+    var checkBox = document.getElementById("darkmode");
+    if (checkBox.checked == true){
+        document.body.style.backgroundColor = "#000000";
+        document.getElementsByTagName("label")[0].style.color = "#FFFFFF";
     } else {
-        document.documentElement.style.setProperty('--primary-background', 'white');
-        document.documentElement.style.setProperty('--primary-color', 'black');
+        document.body.style.backgroundColor = "#FFFFFF";
+        document.getElementsByTagName("label")[0].style.color = "#000000";
     }
 }
 
-checkbox.addEventListener('click', darkmode);
-
-darkmode();
-
-// 3 columns (x), dark mode schalter (x), canvas border (x), text (riki), in-game restart statt alert (), ball random start (), pause/play button (evt. stackoverflow) \\
+var checkBox = document.getElementById("darkmode");
+checkBox.onclick = myFunction();
+// 3 columns (x), dark mode schalter (), text (), in-game restart statt alert (), ball random start (), pause button () \\

@@ -1,133 +1,31 @@
 <!DOCTYPE html>
 <html lang="DE">
 <head>
+    <link rel="stylesheet" href="style.css">
     <meta charset="utf-8" />
     <title>Game made by Aleks</title>
     <style>
         * { padding: 0; margin: 0; }
-        canvas { background: #000000; display: block; margin: 0 auto; border:2px solid white }
-
-        label{
-            font-size: medium;
-            padding: 0.90624997em;
-            color: black;
-        }
-
-        /* toggle in label designing */
-        .toggle {
-            position : relative ;
-            display : inline-block;
-            width : 100px;
-            height : 52px;
-            background-color: red;
-            border-radius: 30px;
-            border: 2px solid black;
-        }
-
-        /* After slide changes */
-        .toggle:after {
-            content: '';
-            position: absolute;
-            width: 46px;
-            height: 46px;
-            border-radius: 100%;
-            background-color: black;
-            top: 1px;
-            left: 1px;
-            transition:  all 0.5s;
-        }
-
-        /* Toggle text */
-        p {
-            font-family: Verdana, sans-serif;
-            font-weight: bold;
-        }
-
-        /* Checkbox cheked effect */
-        .checkbox:checked + .toggle::after {
-            left : 49px;
-        }
-
-        /* Checkbox cheked toggle label bg color */
-        .checkbox:checked + .toggle {
-            background-color: green;
-        }
-
-        /* Checkbox vanished */
-        .checkbox {
-            display : none;
-        }
-
-        * {
-            box-sizing: border-box;
-        }
-
-        /* Create three unequal columns that floats next to each other */
-        .column {
-            float: left;
-        }
-
-        .left, .right {
-            width: 30%;
-            padding: 0px;
-        }
-
-        .middle {
-            width: 40%;
-        }
-
-        /* Clear floats after the columns */
-        .row:after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-
-        h2.headertext {
-            text-align: center;
-        }
-        h3.headertext {
-            text-align: center;
-        }
-
-        body {
-            background-color: var(--primary-background);
-            color: var(--primary-color);
-        }
+        canvas { background: #000000; display: block; margin: 0 auto; }
     </style>
 </head>
 <body>
-<div class="row">
-    <div class="column left">
-        <h3 class="headertext">Contact</h3>
-    </div>
-    <div class="column middle">
-        <h2 class="headertext">Breakout-Clone</h2>
-        <canvas id="TheCanvas" width="420" height="600"></canvas>
-    </div>
-    <div class="column right">
-        <h3>Darkmode</h3>
-        <br><br>
-        <input type="checkbox" id="darkmode"
-               class="checkbox" />
-        <label for="darkmode" class="toggle">
-            <p>ON      OFF</p>
-        </label>
-    </div>
-</div>
+    
+    <label for="darkmode">Darkmode</label> 
+    <input type="checkbox" id="darkmode" onclick="myFunction()">
 
-<script>
-    function myFunction() {
-        var checkBox = document.getElementById("darkmode");
-        if (checkBox.checked == true){
+    <script>
+        function myFunction() {
+          var checkBox = document.getElementById("darkmode");
+          if (checkBox.checked == true){
             document.body.style.backgroundColor = "#000000";
             document.getElementsByTagName("label")[0].style.color = "#FFFFFF";
-        } else {
+          } else {
             document.body.style.backgroundColor = "#FFFFFF";
             document.getElementsByTagName("label")[0].style.color = "#000000";
+          }
         }
-    }
-</script>
+    </script>
 
 <canvas id="TheCanvas" width="420" height="600"></canvas>
 <script>
@@ -152,7 +50,7 @@
     var brickOffsetTop = 30;
     var brickOffsetLeft = 15;
     var score = 0;
-    var lives = 99;
+    var lives = 3;
 
     var bricks = [];
     for(var c=0; c<brickColumnCount; c++) {
@@ -302,23 +200,6 @@
         y += dy;
     }
     var interval = setInterval(draw, 9);
-
-    var checkbox = document.getElementById('darkmode');
-
-    function darkmode() {
-        if (checkbox.checked == true){
-            document.documentElement.style.setProperty('--primary-background', 'black');
-            document.documentElement.style.setProperty('--primary-color', 'white');
-        } else {
-            document.documentElement.style.setProperty('--primary-background', 'white');
-            document.documentElement.style.setProperty('--primary-color', 'black');
-        }
-    }
-
-    checkbox.addEventListener('click', darkmode);
-
-    darkmode();
-
-    // 3 columns (x), dark mode schalter (x), canvas border (x), text (riki), in-game restart statt alert (), ball random start (), pause/play button (evt. stackoverflow) \\
+    // 3 columns w/ beat, dark mode schalter, text, in-game restart statt alert, ball random start \\
 </script>
 </body>

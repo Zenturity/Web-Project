@@ -1,12 +1,21 @@
 * { padding: 0; margin: 0; }
-canvas { background: #000000; display: block; margin: 0 auto; border:2px solid white }
+canvas { background: #000000; display: block; margin: 0 auto; border: white }
 
 label{
     font-size: medium;
-    padding: 0.90624997em;
+    padding: 0.8em;
     color: black;
 }
 
+input{
+    background-color: white;
+    padding: 100px;
+}
+
+canvas{
+    border: 100px;
+    border-color: white;
+}
 /* toggle in label designing */
 .toggle {
     position : relative ;
@@ -82,9 +91,4 @@ h2.headertext {
 }
 h3.headertext {
     text-align: center;
-}
-
-body {
-    background-color: var(--primary-background);
-    color: var(--primary-color);
 }
