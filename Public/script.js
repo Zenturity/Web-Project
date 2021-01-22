@@ -184,5 +184,11 @@ function darkmode() {
 checkbox.addEventListener('click', darkmode);
 
 darkmode();
+//initialize
+var flag=false;
+//in update function
+if(flag){
+    //run the script
+}
 
-// 3 columns (x), dark mode schalter (x), canvas border (x), text (riki), in-game restart statt alert (), ball random start (), pause/play button (evt. stackoverflow) \\
+// 3 columns (x), dark mode schalter (x), canvas border (x), text (x), bilder mit links (x) in-game restart statt alert (-), ball random start (-), pause/play button (evt. stackoverflow) \\
