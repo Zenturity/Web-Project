@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="DE">
+<head>
+    <meta charset="utf-8" />
+    <title>Game made by Aleks</title>
+    <meta name="title" content="Game made by Aleks">
+    <meta name="description" content="This is a self-programmed game I made in computer science class. Enjoy!"
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://breakout.kanti-informatik.ch/">
+    <meta property="og:title" content="Game made by Aleks">
+    <meta property="og:description" content="This is a self-programmed game I made in computer science class. Enjoy!">
+    <meta property="og:image" content="">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://breakout.kanti-informatik.ch/">
+    <meta property="twitter:title" content="Game made by Aleks">
+    <meta property="twitter:description" content="This is a self-programmed game I made in computer science class. Enjoy!">
+    <meta property="twitter:image" content="">
+    <link href="style.css" rel="stylesheet"/>
+    <style>
+        * { padding: 0; margin: 0; }
+        canvas { background: #000000; display: block; margin: 0 auto; border:2px solid white }
+
+        label{
+            font-size: medium;
+            padding: 0.90624997em;
+            color: black;
+        }
+
+        /* toggle in label designing */
+        .toggle {
+            position : relative ;
+            display : inline-block;
+            width : 100px;
+            height : 52px;
+            background-color: red;
+            border-radius: 30px;
+            border: 2px solid black;
+        }
+
+        /* After slide changes */
+        .toggle:after {
+            content: '';
+            position: absolute;
+            width: 46px;
+            height: 46px;
+            border-radius: 100%;
+            background-color: black;
+            top: 1px;
+            left: 1px;
+            transition:  all 0.5s;
+        }
+
+        /* Toggle text */
+        p {
+            font-family: Verdana, sans-serif;
+            font-weight: bold;
+        }
+
+        /* Checkbox cheked effect */
+        .checkbox:checked + .toggle::after {
+            left : 49px;
+        }
+
+        /* Checkbox cheked toggle label bg color */
+        .checkbox:checked + .toggle {
+            background-color: green;
+        }
+
+        /* Checkbox vanished */
+        .checkbox {
+            display : none;
+            position: center;
+            alignment: center;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        /* Create three unequal columns that floats next to each other */
+        .column {
+            float: left;
+        }
+
+        .left, .right {
+            width: 30%;
+            padding: 0px;
+        }
+
+        .middle {
+            width: 40%;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+
+        h2.headertext {
+            text-align: center;
+        }
+        h3.headertext {
+            text-align: center;
+        }
+
+        body {
+            background-color: var(--primary-background);
+            color: var(--primary-color);
+        }
+        img {
+            display: block;
+            margin-left: auto;
+            margin-right: auto;
+            margin-top: 100px;
+            margin-bottom: auto;
+        }
+        .text{
+            text-align: left;
+            margin-top: 0px;
+        }
+        h4.headertext{
+            text-align: center;
+            margin-top: 200px;
+        }
+        .line{
+            display: flex;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+<div class="row">
+    <div class="column left">
+        <h3 class="headertext">Contact</h3>
+        <p>
+            <a href="https://discord.gg/uVYHccb" target="_blank">
+
+                <img border="0" alt="Discord-Server" class="center" src="https://upload.wikimedia.org/wikipedia/commons/thumb/c/ca/Discord_Color_Text_Logo.svg/1200px-Discord_Color_Text_Logo.svg.png" width="400" height="80">
+            </a>
+            <a href="https://www.paypal.me/zENz0R" target="_blank">
+
+                <img border="0" alt="PayPal" class="center" src="https://cdn.pixabay.com/photo/2015/05/26/09/37/paypal-784404_1280.png" width="400" height="150">
+            </a>
+            <a href="https://twitter.com/zenturity" target="_blank">
+
+                <img border="0" alt="Twitter" class="center" src="https://www.jobware.de/jobsearch/embed/job/4135/013/26013/105/019075105/019075105/Twitter.svg" width="400" height="80">
+            </a>
+        </p>
+    </div>
+    <div class="column middle">
+        <h2 class="headertext">Breakout-Clone</h2>
+        <canvas id="TheCanvas" width="420" height="600"></canvas>
+    </div>
+    <div class="column right">
+        <h3 class="headertext">Darkmode</h3>
+        <br><br>
+        <div class="line"><div class="button-center">
+            <input type="checkbox" id="darkmode"
+                   class="checkbox" />
+            <label for="darkmode" class="toggle">
+                <p class="label">ON      OFF</p>
+            </label>
+        </div></div>
+        <h4 class="headertext" style="text-align: center;">About me</h4>
+        <p class="text" style="text-align:center;" >I am an 18 year old high school student from Switzerland. I am also looking forward to studying Computer science and Economics at the University of Zurich. I would be glad if you're enjoying the game I programmed as a web-project for school.</p>
+    </div>
+</div>
+
+<script>
+    var canvas = document.getElementById("TheCanvas");
+    var ctx = canvas.getContext("2d");
+    var x = canvas.width/2;
+    var y = canvas.height-50;
+    var dx = 2
+    var dy = -2;
+    var ballRadius = 10;
+    var paddleHeight = 15;
+    var paddleWidth = 80;
+    var paddleX = (canvas.width-paddleWidth) / 2;
+    var rightPressed = false;
+    var leftPressed = false;
+    var brickRowCount = 6;
+    var brickColumnCount = 4;
+    var brickWidth = 90;
+    var brickHeight = 20;
+    var brickPadding = 10;
+    var brickOffsetTop = 30;
+    var brickOffsetLeft = 15;
+    var score = 0;
+    var lives = 3;
+
+    var bricks = [];
+    for(var c=0; c<brickColumnCount; c++) {
+        bricks[c] = [];
+        for(var r=0; r<brickRowCount; r++) {
+            bricks[c][r] = { x: 0, y: 0,status: 1 };
+        }
+    }
+
+    document.addEventListener("keydown", keyDownHandler, false);
+    document.addEventListener("keyup", keyUpHandler, false);
+    document.addEventListener("mousemove", mouseMoveHandler, false);
+
+    function mouseMoveHandler(e) {
+        var relativeX = e.clientX - canvas.offsetLeft;
+        if(relativeX > 0 && relativeX < canvas.width) {
+            paddleX = relativeX - paddleWidth/2;
+        }
+    }
+
+    function keyDownHandler(e) {
+        if(e.key == "Right" || e.key == "ArrowRight") {
+            rightPressed = true;
+        }
+        else if(e.key === "Left" || e.key == "ArrowLeft") {
+            leftPressed = true;
+        }
+    }
+
+    function keyUpHandler(e) {
+        if(e.key === "Right" || e.key === "ArrowRight") {
+            rightPressed = false;
+        }
+        else if(e.key === "Left" || e.key === "ArrowLeft") {
+            leftPressed = false;
+        }
+    }
+
+    function collisionDetection() {
+        for(var c=0; c<brickColumnCount; c++) {
+            for(var r=0; r<brickRowCount; r++) {
+                var b = bricks[c][r];
+                if(b.status == 1) {
+                    if(x > b.x && x < b.x+brickWidth && y > b.y && y < b.y+brickHeight) {
+                        dy = -dy;
+                        b.status = 0;
+                        score++;
+                        if(score == brickRowCount*brickColumnCount) {
+                            alert("YOU WIN, WELL DONE!");
+                            document.location.reload();
+                            clearInterval(interval); // <- This is needed for the browser to end the game \\
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    function drawScore() {
+        ctx.font = "16px OCR A";
+        ctx.fillStyle = "#00ffd9"
+        ctx.fillText("Score: "+score, 8, 20);
+    }
+
+    function drawLives() {
+        ctx.font = "16px OCR A"
+        ctx.fillStyle = "00ffd9"
+        ctx.fillText("Lives: "+lives, canvas.width-85, 20);
+    }
+
+    function drawBall() {
+        // drawing code \\
+        ctx.beginPath();
+        ctx.arc(x, y, ballRadius, 0, Math.PI*2);
+        ctx.lineWidth=3
+        ctx.strokeStyle = "#00ff00";
+        ctx.stroke();
+        ctx.closePath();
+    }
+    function drawPaddle() {
+        ctx.beginPath();
+        ctx.rect(paddleX, canvas.height-15, paddleWidth, paddleHeight);
+        ctx.lineWidth=2
+        ctx.fillStyle = "#ff0000";
+        ctx.fill();
+        ctx.closePath();
+    }
+    function drawBricks() {
+        for(var c=0; c<brickColumnCount; c++) {
+            for(var r=0; r<brickRowCount; r++) {
+                if(bricks[c][r].status == 1) {
+                    var brickX = (c*(brickWidth+brickPadding))+brickOffsetLeft;
+                    var brickY = (r*(brickHeight+brickPadding))+brickOffsetTop;
+                    bricks[c][r].x = brickX;
+                    bricks[c][r].y = brickY;
+                    ctx.beginPath();
+                    ctx.rect(brickX, brickY, brickWidth, brickHeight);
+                    ctx.strokeStyle = "#33FFFF";
+                    ctx.stroke();
+                    ctx.closePath();
+                }
+            }
+        }
+    }
+
+    function draw() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        drawBricks();
+        drawBall();
+        drawPaddle();
+        drawScore();
+        drawLives();
+        collisionDetection();
+
+        if (x + dx > canvas.width - ballRadius || x + dx < ballRadius) {
+            dx = -dx;
+        }
+        if (y + dy < ballRadius) {
+            dy = -dy;
+        }
+        else if (y + dy > canvas.height - ballRadius) {
+            if (x > paddleX && x < paddleX + paddleWidth) {
+                dy = -dy;
+            }
+            else {
+                lives--;
+                if(!lives) {
+                    alert("Game Over! Press 'Ok' to reload!");
+                    document.location.reload();
+                    clearInterval(interval); // Is needed for Browser to end the game \\
+                }
+                else {
+                    x = canvas.width/2;
+                    y = canvas.height-30
+                    dx = 2;
+                    dy = -2;
+                    paddleX = (canvas.width-paddleWidth)/2;
+                }
+            }
+        }
+        if (rightPressed && paddleX < canvas.width - paddleWidth) {
+            paddleX += 3;
+        } else if (leftPressed && paddleX > 0) {
+            paddleX -= 3;
+        }
+        x += dx;
+        y += dy;
+    }
+    var interval = setInterval(draw, 9);
+
+    var checkbox = document.getElementById('darkmode');
+
+    function darkmode() {
+        if (checkbox.checked == true){
+            document.documentElement.style.setProperty('--primary-background', 'black');
+            document.documentElement.style.setProperty('--primary-color', 'white');
+        } else {
+            document.documentElement.style.setProperty('--primary-background', 'white');
+            document.documentElement.style.setProperty('--primary-color', 'black');
+        }
+    }
+
+    checkbox.addEventListener('click', darkmode);
+
+    darkmode();
+    //initialize
+    var flag=false;
+    //in update function
+    if(flag){
+        //run the script
+    }
+</script>
+</body>
